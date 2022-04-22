@@ -1,0 +1,6 @@
+service : {
+  geometricMeanVal: (vec float64) -> (float64);
+  meanVal: (vec float64) -> (float64);
+  medianVal: (vec float64) -> (float64);
+  weightedMeanVal: (vec float64, float64, float64) -> (opt float64);
+}
