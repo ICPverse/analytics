@@ -65,5 +65,30 @@ module{
 
     };
 
+    public func correlation(arr1: [Float], arr2: [Float]): ?Float{
+        if (arr1.size() != arr2.size()){
+            return null;
+        };
+        let mean1 = mean(arr1);
+        let mean2 = mean(arr2);
+        var num : Float = 0.0;
+        var den1 : Float = 0.0;
+        var den2 : Float = 0.0;
+        var i = 0;
+        while (i < arr1.size()){
+            num += ((arr1[i]-mean1)*(arr2[i]-mean2));
+            den1 += (arr1[i]-mean1)**2;
+            den2 += (arr2[i]-mean2)**2;
+            i += 1;
+        };
+        let den : Float = (den1 * den2)**(0.5);
+        if (den == 0){
+            return null;
+        }
+        else {
+            return ?(num/den);
+        };
+    };
+
 
 };

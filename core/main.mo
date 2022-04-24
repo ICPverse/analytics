@@ -19,4 +19,8 @@ actor {
     public func medianVal(arr : [Float]): async Float{
         return Analytics.median(arr);
     };
+
+    public func correlationVal(arr1: [Float], arr2: [Float]): async ?Float{
+        return Analytics.correlation(arr1,arr2);
+    };
 };
