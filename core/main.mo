@@ -4,7 +4,7 @@ import Debug "mo:base/Debug";
 import Analytics "analytics";
 
 actor {
-    public func meanVal(arr : [Float]): async Float{
+    public func meanVal(arr : [Float]): async ?Float{
         return Analytics.mean(arr);
     };
 
@@ -22,5 +22,13 @@ actor {
 
     public func correlationVal(arr1: [Float], arr2: [Float]): async ?Float{
         return Analytics.correlation(arr1,arr2);
+    };
+
+    public func linReg(arr1: [Float], arr2: [Float]): async ?(Float,Float){
+        return Analytics.linearRegression(arr1,arr2);
+    };
+
+    public func kNN(arr: [(Float, Float, Text)], inputVal: (Float, Float), classifications: [Text]): async ?Text{
+        return Analytics.kNearestNeighbors2(arr, inputVal, classifications);
     };
 };
