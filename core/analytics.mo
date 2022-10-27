@@ -7,6 +7,48 @@ import Debug "mo:base/Debug";
 
 module{
 
+    public type Complex = {
+         re: Float;
+         im: Float;
+    };
+
+    public func add_complex(c1: Complex, c2: Complex): async Complex {
+        return {
+            re = c1.re + c2.re;
+            im = c1.im + c2.im;
+        };
+    };
+
+    public func subtract_complex(c1: Complex, c2: Complex): async Complex {
+        return {
+            re = c1.re - c2.re;
+            im = c1.im - c2.im;
+        };
+    };
+
+    public func multiply_complex(c1: Complex, c2: Complex): async Complex {
+        return {
+            re = (c1.re * c2.re) - (c1.im * c2.im);
+            im = (c1.im * c2.re) + (c1.re * c2.im);
+        };
+    };
+
+    public func square_norm(c: Complex): async Float {
+        return (c.re ** 2) + (c.im ** 2);
+    };
+
+    public func norm(c: Complex): async Float {
+        return ((c.re ** 2) + (c.im ** 2)) ** (0.5);
+    };
+
+    public func inverse_complex(c: Complex): async Complex {
+        let sq_norm : Float = (c.re ** 2) + (c.im ** 2);
+        return {
+            re = c.re/sq_norm;
+            im = - c.im/sq_norm;
+        };
+    };
+
     
     public func mean(arr : [Float]): ?Float{
         var sum : Float = 0.0;
@@ -247,6 +289,8 @@ module{
 
         return (?classifications[maxInd]);
     };
+
+    
 
 
 };
