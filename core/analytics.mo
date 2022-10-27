@@ -4,9 +4,12 @@ import Int "mo:base/Int";
 import Nat "mo:base/Nat";
 import Nat64 "mo:base/Float";
 import Debug "mo:base/Debug";
+import Nat32 "mo:base/Nat32";
+import Buffer "mo:base/Buffer";
 
 module{
 
+    
     public type Complex = {
          re: Float;
          im: Float;
@@ -288,6 +291,41 @@ module{
 
 
         return (?classifications[maxInd]);
+    };
+
+    
+
+    public func fast_fourier_transform_input_permutation(length: Nat32) : [Nat] {
+        
+        var length_nat = Nat32.toNat(length);
+        var result = Buffer.Buffer<Nat>(length_nat);
+        
+        var i = 0;
+        while (i < length_nat) {
+            result.add(i);
+            i += 1;
+        };
+        var reverse: Nat32 = 0;
+        var position: Nat32 = 1;
+        
+        while (position < length) {
+            var bit = length >> 1;
+            while (bit & reverse != 0) {
+                reverse ^= bit;
+                bit >>= 1;
+            };
+            reverse ^= bit;
+            // This is equivalent to adding 1 to a reversed number
+            if (position < reverse) {
+                // Only swap each element once
+                var temp = result.toArray()[Nat32.toNat(position)];
+                result.put(Nat32.toNat(position), result.toArray()[Nat32.toNat(reverse)]);
+                result.put(Nat32.toNat(reverse), temp);
+                
+            };
+            position += 1;
+        };
+        return result.toArray();
     };
 
     

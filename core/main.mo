@@ -2,6 +2,7 @@ import Array "mo:base/Array";
 import Nat "mo:base/Nat";
 import Debug "mo:base/Debug";
 import Analytics "analytics";
+import Buffer "mo:base/Buffer";
 
 actor {
     public type Complex = Analytics.Complex;
@@ -53,5 +54,9 @@ actor {
             im = c.1;
         };
         return await Analytics.inverse_complex(_c);
+    };
+
+    public func fft_input_permutation(length: Nat32) :  async [Nat] {
+        return  Analytics.fast_fourier_transform_input_permutation(length);
     };
 };
