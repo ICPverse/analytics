@@ -2,7 +2,8 @@ import Array "mo:base/Array";
 import Nat "mo:base/Nat";
 import Debug "mo:base/Debug";
 import Analytics "analytics";
-import Buffer "mo:base/Buffer";
+import Buffer "Buffer2";
+import Nat32 "mo:base/Nat32";
 
 actor {
     public type Complex = Analytics.Complex;
@@ -44,7 +45,7 @@ actor {
             re = c2.0;
             im = c2.1;
         };
-        return await Analytics.add_complex(_c1, _c2);
+        return await Analytics.complex_sum(_c1, _c2);
 
     };
 
@@ -53,10 +54,39 @@ actor {
             re = c.0;
             im = c.1;
         };
-        return await Analytics.inverse_complex(_c);
+        return await Analytics.complex_inverse(_c);
     };
 
     public func fft_input_permutation(length: Nat32) :  async [Nat] {
         return  Analytics.fast_fourier_transform_input_permutation(length);
+    };
+
+    
+
+    public func check_fft(r: [(Float, Float)]): async (){
+        
+        var i = 0;
+        var c = Buffer.Buffer2<Complex>(r.size()); 
+        
+        while (i < r.size()){
+            var c_el : Complex = {
+                re = r[i].0;
+                im = r[i].1;
+            };
+            c.add(c_el);
+            i += 1;
+        };
+        
+        let c_res = Analytics.fourier_fast_transform(c);
+
+        switch c_res{
+            case null {
+                Debug.print("The number of points needs to be a power of 2");
+            };
+            case (?buff) {
+                Debug.print(debug_show buff.get(r.size()/2));
+            };
+        };
+        
     };
 };

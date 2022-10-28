@@ -5,46 +5,98 @@ import Nat "mo:base/Nat";
 import Nat64 "mo:base/Float";
 import Debug "mo:base/Debug";
 import Nat32 "mo:base/Nat32";
-import Buffer "mo:base/Buffer";
+import Buffer "Buffer2";
 
 module{
 
+    public func cos(x: Float): Float {
+        var f = x;
+        if (x < 0.00){
+            f := x * -1.0;
+        };
+        
+        return 1.0 - (f**2)/2.0 + (f**4)/24.0 - (f**6)/720.0 + (f**8)/40320.0 - (f**10)/3628800.0;
+    };
+
+    public func sin(x: Float): Float {
+        let f = x;
+        
+        
+        return f - (f**3)/6.0 + (f**5)/120.0 - (f**7)/5040.0 + (f**9)/362880.0 - (f**11)/39916800.0;
+    };
     
     public type Complex = {
          re: Float;
          im: Float;
     };
 
-    public func add_complex(c1: Complex, c2: Complex): async Complex {
+    public func add_complex(c1: Complex, c2: Complex):  Complex {
         return {
             re = c1.re + c2.re;
             im = c1.im + c2.im;
         };
     };
 
-    public func subtract_complex(c1: Complex, c2: Complex): async Complex {
+    public func subtract_complex(c1: Complex, c2: Complex):  Complex {
         return {
             re = c1.re - c2.re;
             im = c1.im - c2.im;
         };
     };
 
-    public func multiply_complex(c1: Complex, c2: Complex): async Complex {
+    public func multiply_complex(c1: Complex, c2: Complex):  Complex {
         return {
             re = (c1.re * c2.re) - (c1.im * c2.im);
             im = (c1.im * c2.re) + (c1.re * c2.im);
         };
     };
 
-    public func square_norm(c: Complex): async Float {
+    public func complex_sum(c1: Complex, c2: Complex):  async Complex {
+        return {
+            re = c1.re + c2.re;
+            im = c1.im + c2.im;
+        };
+    };
+
+    public func complex_diff(c1: Complex, c2: Complex):  async Complex {
+        return {
+            re = c1.re - c2.re;
+            im = c1.im - c2.im;
+        };
+    };
+
+    public func complex_prod(c1: Complex, c2: Complex): async Complex {
+        return {
+            re = (c1.re * c2.re) - (c1.im * c2.im);
+            im = (c1.im * c2.re) + (c1.re * c2.im);
+        };
+    };
+
+    public func square_norm(c: Complex):  Float {
         return (c.re ** 2) + (c.im ** 2);
     };
 
-    public func norm(c: Complex): async Float {
+    public func norm(c: Complex):  Float {
         return ((c.re ** 2) + (c.im ** 2)) ** (0.5);
     };
 
-    public func inverse_complex(c: Complex): async Complex {
+    public func inverse_complex(c: Complex):  Complex {
+        let sq_norm : Float = (c.re ** 2) + (c.im ** 2);
+        return {
+            re = c.re/sq_norm;
+            im = - c.im/sq_norm;
+        };
+    };
+
+    public func complex_square_norm(c: Complex): async Float {
+        return (c.re ** 2) + (c.im ** 2);
+    };
+
+    public func complex_norm(c: Complex): async Float {
+        return ((c.re ** 2) + (c.im ** 2)) ** (0.5);
+    };
+
+    public func complex_inverse(c: Complex): async Complex {
         let sq_norm : Float = (c.re ** 2) + (c.im ** 2);
         return {
             re = c.re/sq_norm;
@@ -293,12 +345,25 @@ module{
         return (?classifications[maxInd]);
     };
 
+    func  bitReverse(_n: Nat32, bits: Nat32): Nat32 {
+        var reversedN: Nat32 = _n;
+        var count = bits - 1;
+        var n = _n;
+        n >>= 1;
+        while (n > 0) {
+            reversedN := (reversedN << 1) | (n & 1);
+            count -= 1;
+            n >>= 1;
+        };
+
+        return ((reversedN << count) & ((1 << bits) - 1));
+    };
     
 
     public func fast_fourier_transform_input_permutation(length: Nat32) : [Nat] {
         
         var length_nat = Nat32.toNat(length);
-        var result = Buffer.Buffer<Nat>(length_nat);
+        var result = Buffer.Buffer2<Nat>(length_nat);
         
         var i = 0;
         while (i < length_nat) {
@@ -330,5 +395,55 @@ module{
 
     
 
+    //Binary Approach that Works for Number of Points that are a Power of 2
+    public func fourier_fast_transform(b: Buffer.Buffer2<Complex>) : ?Buffer.Buffer2<Complex>{
+        var buffer = b.clone();
+        var bits : Nat32 = 0;
+        while (Nat32.toNat(2**bits) < buffer.size()){
+            bits += 1;
+        };
+        if (Nat32.toNat(2**bits) != buffer.size()){
+            return null;
+        };
+        
+        
+        var j: Nat32 = 1;
+        while (Nat32.toNat(j) < buffer.size() / 2) {
+
+            var swapPos = bitReverse(j, bits);
+            var temp = buffer.get(Nat32.toNat(j));
+            buffer.put(Nat32.toNat(j), buffer.get(Nat32.toNat(swapPos)));
+            buffer.put(Nat32.toNat(swapPos), temp);
+            j += 1;
+        };
+        var N : Nat32= 2;
+        while (Nat32.toNat(N) <= buffer.size()) {
+            var i = 0;
+            while (i < buffer.size()) {
+                var k = 0;
+                while (k < Nat32.toNat(N) / 2) {
+
+                    var evenIndex = i + k;
+                    var oddIndex = i + k + (Nat32.toNat(N) / 2);
+                    var even = buffer.get(evenIndex);
+                    var odd = buffer.get(oddIndex);
+
+                    var term: Float = (-2.0 * 3.1416 * Float.fromInt(k)) /  Float.fromInt(Nat32.toNat(N));
+                    var exp :  Complex= {
+                        re=cos(term);
+                        im= sin(term);
+                    };
+                    exp := multiply_complex(exp, odd);
+
+                    buffer.put(evenIndex, add_complex(even, exp));
+                    buffer.put(oddIndex, subtract_complex(even, exp));
+                    k += 1;
+                };
+                i += Nat32.toNat(N);
+            };
+            N <<= 1;
+        };
+        return ?buffer;
+    };
 
 };
