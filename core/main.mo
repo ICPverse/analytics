@@ -77,7 +77,7 @@ actor {
             i += 1;
         };
         
-        let c_res = Analytics.fourier_fast_transform(c);
+        let c_res = Analytics.fast_fourier_transform(c);
 
         switch c_res{
             case null {
@@ -88,5 +88,41 @@ actor {
             };
         };
         
+    };
+
+    public func testPolynomial(arr: [Float], value: Float): async Float {
+        return  Analytics.poly(arr, value);
+    };
+
+    public func testCosh(x: Float): async Float {
+        return Analytics.cosh(x);
+    };
+
+    //Make sure to input an array at least with 3 elements
+    public func testRotateLeft(arr: [Nat]): async [Nat]{
+        var i = 0;
+        var c = Buffer.Buffer2<Nat>(arr.size()); 
+        
+        while (i < arr.size()){
+            
+            c.add(arr[i]);
+            i += 1;
+        };
+        c.rotate_left(3);
+        return c.toArray();
+    };
+
+    //Make sure to input an array at least with 2 elements
+    public func testRotateRight(arr: [Nat]): async [Nat]{
+        var i = 0;
+        var c = Buffer.Buffer2<Nat>(arr.size()); 
+        
+        while (i < arr.size()){
+            
+            c.add(arr[i]);
+            i += 1;
+        };
+        c.rotate_right(2);
+        return c.toArray();
     };
 };

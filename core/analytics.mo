@@ -9,20 +9,33 @@ import Buffer "Buffer2";
 
 module{
 
-    public func cos(x: Float): Float {
-        var f = x;
-        if (x < 0.00){
-            f := x * -1.0;
+    public func poly(coeff: [Float], x: Float): Float {
+        var sum : Float = 0.00;
+        var i = 0;
+        while (i < coeff.size()){
+            sum += coeff[i] * Float.pow(x, Float.fromInt((coeff.size() - i - 1)));
+            i += 1;
+            
         };
-        
-        return 1.0 - (f**2)/2.0 + (f**4)/24.0 - (f**6)/720.0 + (f**8)/40320.0 - (f**10)/3628800.0;
+        return sum;
+    };
+
+    public func cos(x: Float): Float {
+        return Float.cos(x);
     };
 
     public func sin(x: Float): Float {
-        let f = x;
-        
-        
-        return f - (f**3)/6.0 + (f**5)/120.0 - (f**7)/5040.0 + (f**9)/362880.0 - (f**11)/39916800.0;
+        return Float.sin(x);
+    };
+
+    public func cosh(x: Float): Float {
+        let res = 1.0 + Float.pow(x, 2.0)/2.0 + Float.pow(x, 4.0)/24.0 + Float.pow(x, 6.0)/720.0 + Float.pow(x, 8.0)/40320.0 + Float.pow(x, 10.0)/3628800.0;
+        return res;
+    };
+
+    public func sinh(x: Float): Float {
+        let res = x + Float.pow(x, 3.0)/6.0 + Float.pow(x, 5.0)/120.0 + Float.pow(x, 7.0)/5040.0 + Float.pow(x, 9.0)/362880.0 + Float.pow(x, 11.0)/39916800.0;
+        return res;
     };
     
     public type Complex = {
@@ -101,6 +114,20 @@ module{
         return {
             re = c.re/sq_norm;
             im = - c.im/sq_norm;
+        };
+    };
+
+    public func complex_sin(c: Complex): async Complex {
+        return {
+            re = sin(c.re) * cosh(c.im);
+            im = cos(c.re) * sinh(c.im);
+        };
+    };
+
+    public func complex_cos(c: Complex): async Complex {
+        return {
+            re = cos(c.re) * cosh(c.im);
+            im = - (sin(c.re) * sinh(c.im));
         };
     };
 
@@ -396,7 +423,7 @@ module{
     
 
     //Binary Approach that Works for Number of Points that are a Power of 2
-    public func fourier_fast_transform(b: Buffer.Buffer2<Complex>) : ?Buffer.Buffer2<Complex>{
+    public func fast_fourier_transform(b: Buffer.Buffer2<Complex>) : ?Buffer.Buffer2<Complex>{
         var buffer = b.clone();
         var bits : Nat32 = 0;
         while (Nat32.toNat(2**bits) < buffer.size()){

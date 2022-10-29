@@ -4,6 +4,7 @@ import Prim "mo:⛔";
 import Result "mo:base/Result";
 import Order "mo:base/Order";
 import Array "mo:base/Array";
+import HashMap "mo:base/HashMap";
 
 module {
   type Order = Order.Order;
@@ -435,7 +436,52 @@ module {
       newBuffer;
     };
 
-    /// @deprecated Use static library function instead.
+    public func upsize(len: Nat, initValue: X): Bool{
+      if (_size >= len){
+        return false;
+      }
+      else {
+        var i = 0;
+        while (i + _size < len ) {
+          this.add(initValue);
+          i += 1;
+        };
+      };
+      return true;
+    };
+    
+
+    
+  public func rotate_left(targets: Nat) {
+    var b = this.clone();
+    var i = 0;
+    while (i + targets  < _size) {
+      this.put(i, b.get(targets + i ));
+      i += 1;
+    };
+    var j = 0;
+    while (i < _size){
+      this.put(i, b.get(j));
+      j += 1;
+      i += 1;
+    };
+  };
+
+  public func rotate_right(targets: Nat) {
+    var b = this.clone();
+    var i = 0;
+    while ( i < targets ) {
+      this.put(i, b.get(_size - targets  + i));
+      i += 1;
+    };
+    var j = 0;
+    while (i < _size){
+      this.put(i, b.get(j));
+      j += 1;
+      i += 1;
+    };
+  };
+
     public func toArray() : [X] =
     // immutable clone of array
     Prim.Array_tabulate<X>(
@@ -443,7 +489,7 @@ module {
       func(i : Nat) : X { get i },
     );
 
-    /// @deprecated Use static library function instead.
+    
     public func toVarArray() : [var X] {
       if (_size == 0) { [var] } else {
         let newArray = Prim.Array_init<X>(_size, get 0);
@@ -1536,6 +1582,14 @@ module {
         };
         
 
+    };
+
+    public func hashmapToBuffer<X, Y>(hashmap: HashMap.HashMap<X, Y>): Buffer2<(X, Y)> {
+        var b = Buffer2<(X,Y)>(hashmap.size());
+        for (e in hashmap.entries()){
+          b.add(e);
+        };
+        return b;
     };
     
 
