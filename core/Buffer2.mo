@@ -509,6 +509,15 @@ module {
         this.put(n, temp);
     };
 
+    public func mid(): [X]{
+      if (_size % 2 == 1){
+        return Array.make(this.get((_size-1)/2));
+      }
+      else{
+        return Array.append(Array.make(this.get(_size/2 - 1)), Array.make(this.get(_size/2)));
+      };
+    };
+
     public func split_permanent(ind: Nat): Buffer2<X>{
         if (ind < 0 or ind > this.size()) {
             Prim.trap "Index out of bounds in split";
@@ -1590,6 +1599,61 @@ module {
           b.add(e);
         };
         return b;
+    };
+
+    public func intersection<X>(b1: Buffer2<X>, b2: Buffer2<X>, compare : (X, X) -> Order): Buffer2<X> {
+        if (b1.size() > b2.size()){
+          var big = b1.clone();
+          var small = b2.clone();
+          var i = 0;
+          var j = 0;
+          var intBuffer = Buffer2<X>(small.size());
+          while (i < big.size()){
+            while (j < small.size()){
+              switch (compare(small.get(j), big.get(i))) {
+                case (#equal) {
+                  intBuffer.add(small.get(j));
+                  let _res = small.remove(j);
+                  j := small.size();
+                };
+                case _ {};
+              };
+              
+              
+              j += 1;
+            };
+            i += 1;
+            j := 0;
+          };
+          return intBuffer;
+
+        }
+        else {
+          var small = b1.clone();
+          var big = b2.clone();
+          var i = 0;
+          var j = 0;
+          var intBuffer = Buffer2<X>(small.size());
+          while (i < big.size()){
+            while (j < small.size()){
+              switch (compare(small.get(j), big.get(i))) {
+                case (#equal) {
+                  intBuffer.add(small.get(j));
+                  let _res = small.remove(j);
+                  j := small.size();
+                };
+                case _ {};
+              };
+              
+              
+              j += 1;
+            };
+            i += 1;
+            j := 0;
+          };
+          return intBuffer;
+
+        };
     };
     
 

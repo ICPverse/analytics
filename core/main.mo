@@ -125,4 +125,46 @@ actor {
         c.rotate_right(2);
         return c.toArray();
     };
+
+    public func testMidBuffer(): async (){
+        var arr = [1, 2, 3, 4, 5, 6];
+        var i = 0;
+        var c = Buffer.Buffer2<Nat>(arr.size()); 
+        
+        while (i < arr.size()){
+            
+            c.add(arr[i]);
+            i += 1;
+        };
+
+        let middle = c.mid();
+        Debug.print(debug_show middle);
+    };
+
+    public func testIntersectionBuffer(): async (){
+        var arr1 = [1, 2, 4, 4, 5, 6, 9];
+        var i = 0;
+        var c = Buffer.Buffer2<Nat>(arr1.size()); 
+        
+        while (i < arr1.size()){
+            
+            c.add(arr1[i]);
+            i += 1;
+        };
+        var arr2 = [3, 4, 4, 5, 6, 7];
+        i := 0;
+        var c2 = Buffer.Buffer2<Nat>(arr2.size()); 
+        
+        while (i < arr2.size()){
+            
+            c2.add(arr2[i]);
+            i += 1;
+        };
+
+        let res = Buffer.intersection<Nat>(c, c2, Nat.compare);
+
+        Debug.print(debug_show res.toArray());
+
+        
+    };
 };
