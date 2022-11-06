@@ -3,7 +3,7 @@ This project aims to provide some much needed Higher Math Functionality implemen
 
 It contains (but is not limited to) the following:  
 1. Complex Numbers 
-2. Clusterning (KNN, Linear Regression) 
+2. Clustering (KNN, Linear Regression) 
 3. Hyperbolic Functions 
 4. Mean, Median, Mode, Wmean, etc 
 
