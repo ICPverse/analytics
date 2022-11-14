@@ -4,6 +4,7 @@ import Debug "mo:base/Debug";
 import Analytics "analytics";
 import Buffer "Buffer2";
 import Nat32 "mo:base/Nat32";
+import Complex "../types/Complex";
 
 actor {
     public type Complex = Analytics.Complex;
