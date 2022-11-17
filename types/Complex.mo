@@ -31,6 +31,10 @@ module {
             return  Complex(r, i);          
             
         };
+
+        public func conjugate(): Complex {
+            return Complex(re, -im);
+        };
     };
 
     public func sum(c1: Complex, c2: Complex): Complex {

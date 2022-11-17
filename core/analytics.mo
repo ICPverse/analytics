@@ -6,6 +6,11 @@ import Nat64 "mo:base/Float";
 import Debug "mo:base/Debug";
 import Nat32 "mo:base/Nat32";
 import Buffer "Buffer2";
+import Random "mo:base/Random";
+import Time "mo:base/Time";
+import Text "mo:base/Text";
+import Option "mo:base/Option";
+import Nat8 "mo:base/Nat8";
 
 module{
 
@@ -18,6 +23,59 @@ module{
             
         };
         return sum;
+    };
+
+    public func Rand2(scope: Nat8): Nat {
+        var t = Time.now();
+        var i: Int = 1;
+        var div : Int = 10;
+        var res = "";
+        while (t >= div){
+            let remainder = t % (div);
+            switch remainder {
+                case 0 {
+                    res := res # "a0ZKl";
+                };
+                case 1 {
+                    res := res # "b1YJm";
+                };
+                case 2 {
+                    res := res # "c2XIn";
+                };
+                case 3 {
+                    res := res # "d3WHo";
+                };
+                case 4 {
+                    res := res # "e4VGp";
+                };
+                case 5 {
+                    res := res # "f5UFq";
+                };
+                case 6 {
+                    res := res # "g6TEr";
+                };
+                case 7 {
+                    res := res # "h7SDs";
+                };
+                case 8 {
+                    res := res # "i8RCt";
+                };
+                case 9 {
+                    res := res # "j9QBu";
+                };
+                case _{
+                    res := res # "zPAv";
+                };
+            };
+            t /= div;
+            
+            
+        };
+        
+        let rand = Random.Finite(Text.encodeUtf8(res));
+        let _res = rand.range(scope);
+        let _val = Option.get(_res, Nat8.toNat(scope/2));
+        return _val % Nat8.toNat(scope);
     };
 
     public func cos(x: Float): Float {

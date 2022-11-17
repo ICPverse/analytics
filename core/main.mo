@@ -168,4 +168,8 @@ actor {
 
         
     };
+
+    public func testRand(scope: Nat8): async Nat {
+        return Analytics.Rand2(scope);
+    };
 };
