@@ -25,9 +25,15 @@ module{
         return sum;
     };
 
+
+    // This function is a simple way of getting a random natural number between 0 and SCOPE
+    // Since it uses the Time.now() method as well and maps the repeated remainders to
+    // arbitrary string sequences, apparent randomness is high. However, since epoch values 
+    // are in a way, deterministic, this isn't true/quantum randomness. However, it should be 
+    // usable for most practical purposes.   
     public func Rand2(scope: Nat8): Nat {
         var t = Time.now();
-        var i: Int = 1;
+        
         var div : Int = 10;
         var res = "";
         while (t >= div){
