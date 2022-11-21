@@ -172,4 +172,8 @@ actor {
     public func testRand(scope: Nat8): async Nat {
         return Analytics.Rand2(scope);
     };
+
+    public func testFill(size: Nat, el: Nat): async [Nat] {
+        return Buffer.fill<Nat>(size, el).toArray();
+    };
 };

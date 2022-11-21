@@ -1593,6 +1593,16 @@ module {
 
     };
 
+    public func fill<X>(size: Nat, el: X): Buffer2<X> {
+      var b = Buffer2<X>(size);
+      var i = 0;
+      while (i < size){
+        b.add(el);
+        i += 1;
+      };
+      return b;
+    };
+
     public func hashmapToBuffer<X, Y>(hashmap: HashMap.HashMap<X, Y>): Buffer2<(X, Y)> {
         var b = Buffer2<(X,Y)>(hashmap.size());
         for (e in hashmap.entries()){
