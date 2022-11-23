@@ -85,19 +85,7 @@ module {
       lastElement;
     };
 
-    /// Removes and returns the element at `index` from the buffer.
-    /// All elements with index > `index` are shifted one position to the left.
-    /// This may cause a downsizing of the array.
-    ///
-    /// Traps if index >= size.
-    ///
-    /// WARNING: Repeated removal of elements using this method is ineffecient
-    /// and might be a sign that you should consider a different data-structure
-    /// for your use case.
-    ///
-    /// Runtime: O(size)
-    ///
-    /// Amortized Space: O(1), Worst Case Space: O(size)
+    
     public func remove(index : Nat) : X {
       if (index >= _size) {
         Prim.trap "Buffer index out of bounds in remove";
@@ -451,7 +439,7 @@ module {
     };
     
 
-    
+  // NEW  
   public func rotate_left(targets: Nat) {
     var b = this.clone();
     var i = 0;
@@ -467,6 +455,7 @@ module {
     };
   };
 
+  // NEW
   public func rotate_right(targets: Nat) {
     var b = this.clone();
     var i = 0;
@@ -502,6 +491,7 @@ module {
       };
     };
 
+    // NEW
     public func swap(m: Nat, n: Nat){
         let arr = this.toArray();
         var temp = arr[m];
@@ -518,6 +508,7 @@ module {
       };
     };
 
+    // NEW
     public func split_permanent(ind: Nat): Buffer2<X>{
         if (ind < 0 or ind > this.size()) {
             Prim.trap "Index out of bounds in split";
@@ -604,16 +595,34 @@ module {
     ?minSoFar;
   };
 
-  /// Defines equality for two buffers, using `equal` to recursively compare elements in the
-  /// buffers. Returns true iff the two buffers are of the same size, and `equal`
-  /// evaluates to true for every pair of elements in the two buffers of the same
-  /// index.
-  ///
-  /// Runtime: O(size)
-  ///
-  /// Space: O(1)
-  ///
-  /// *Runtime and space assumes that `equal` runs in O(1) time and space.
+  // NEW
+  public func range<X>(buffer: Buffer2<X>, compare: (X,X) -> Order, difference: (X,X) -> X) : ?X {
+    if (buffer.size() == 0) {
+      return null;
+    };
+    var minSoFar = buffer.get(0);
+    for (current in buffer.vals()) {
+      switch (compare(current, minSoFar)) {
+        case (#less) {
+          minSoFar := current;
+        };
+        case _ {};
+      };
+    };
+    var maxSoFar = buffer.get(0);
+    for (current in buffer.vals()) {
+      switch (compare(current, maxSoFar)) {
+        case (#greater) {
+          maxSoFar := current;
+        };
+        case _ {};
+      };
+    };
+
+    ?difference(maxSoFar, minSoFar);
+  };
+
+  
   public func equal<X>(buffer1 : Buffer2<X>, buffer2 : Buffer2<X>, equal : (X, X) -> Bool) : Bool {
     let size1 = buffer1.size();
 
@@ -876,14 +885,7 @@ module {
     return true;
   };
 
-  /// Checks if `prefix` is a strict prefix of `buffer`. Uses `equal` to
-  /// compare elements.
-  ///
-  /// Runtime: O(size of prefix)
-  ///
-  /// Space: O(size of prefix)
-  ///
-  /// *Runtime and space assumes that `equal` runs in O(1) time and space.
+  
   public func isStrictPrefixOf<X>(prefix : Buffer2<X>, buffer : Buffer2<X>, equal : (X, X) -> Bool) : Bool {
     if (buffer.size() <= prefix.size()) {
       return false;
@@ -891,12 +893,7 @@ module {
     isPrefixOf(prefix, buffer, equal)
   };
 
-  /// Returns the suffix of `buffer` of length `length`.
-  /// Traps if `length`is greater than the size of `buffer`.
-  ///
-  /// Runtime: O(length)
-  ///
-  /// Space: O(length)
+  
   public func suffix<X>(buffer : Buffer2<X>, length : Nat) : Buffer2<X> {
     let size = buffer.size();
 
@@ -937,14 +934,7 @@ module {
     return true;
   };
 
-  /// Checks if `suffix` is a strict suffix of `buffer`. Uses `equal` to compare
-  /// elements.
-  ///
-  /// Runtime: O(length of suffix)
-  ///
-  /// Space: O(length of suffix)
-  ///
-  /// *Runtime and space assumes that `equal` runs in O(1) time and space.
+  
   public func isStrictSuffixOf<X>(suffix : Buffer2<X>, buffer : Buffer2<X>, equal : (X, X) -> Bool) : Bool {
     if (buffer.size() <= suffix.size()) {
       return false;
@@ -1049,13 +1039,7 @@ module {
     };
   };
 
-  /// Creates a new buffer by applying `f` to each element in `buffer`.
-  ///
-  /// Runtime: O(size)
-  ///
-  /// Space: O(size)
-  ///
-  /// *Runtime and space assumes that `f` runs in O(1) time and space.
+  
   public func map<X, Y>(buffer : Buffer2<X>, f : X -> Y) : Buffer2<Y> {
     let newBuffer = Buffer2<Y>(buffer.capacity());
 
@@ -1066,26 +1050,14 @@ module {
     newBuffer;
   };
 
-  /// Applies `f` to each element in `buffer`.
-  ///
-  /// Runtime: O(size)
-  ///
-  /// Space: O(size)
-  ///
-  /// *Runtime and space assumes that `f` runs in O(1) time and space.
+  
   public func iterate<X>(buffer : Buffer2<X>, f : X -> ()) {
     for (element in buffer.vals()) {
       f element;
     };
   };
 
-  /// Applies `f` to each element in `buffer` and its index.
-  ///
-  /// Runtime: O(size)
-  ///
-  /// Space: O(size)
-  ///
-  /// *Runtime and space assumes that `f` runs in O(1) time and space.
+  
   public func mapEntries<X, Y>(buffer : Buffer2<X>, f : (Nat, X) -> Y) : Buffer2<Y> {
     let newBuffer = Buffer2<Y>(buffer.capacity());
 
@@ -1099,14 +1071,7 @@ module {
     newBuffer;
   };
 
-  /// Creates a new buffer by applying `f` to each element in `buffer`,
-  /// and keeping all non-null elements.
-  ///
-  /// Runtime: O(size)
-  ///
-  /// Space: O(size)
-  ///
-  /// *Runtime and space assumes that `f` runs in O(1) time and space.
+ 
   public func mapFilter<X, Y>(buffer : Buffer2<X>, f : X -> ?Y) : Buffer2<Y> {
     let newBuffer = Buffer2<Y>(buffer.capacity());
 
@@ -1555,6 +1520,7 @@ module {
     newBuffer;
   };
 
+  // NEW
   public func split_first<X>(buffer: Buffer2<X>): ?(X, Buffer2<X>){
     let size = buffer.size();
     if (size == 0){
@@ -1578,6 +1544,7 @@ module {
     ?(buffer.get(0), buffer2);
   };
 
+// NEW
     public func truncate<X>(buffer: Buffer2<X>, len: Nat): Buffer2<X>{
         if (buffer.size() < len){
             return buffer;
@@ -1593,6 +1560,7 @@ module {
 
     };
 
+    // NEW
     public func fill<X>(size: Nat, el: X): Buffer2<X> {
       var b = Buffer2<X>(size);
       var i = 0;
@@ -1603,6 +1571,7 @@ module {
       return b;
     };
 
+    // NEW
     public func hashmapToBuffer<X, Y>(hashmap: HashMap.HashMap<X, Y>): Buffer2<(X, Y)> {
         var b = Buffer2<(X,Y)>(hashmap.size());
         for (e in hashmap.entries()){
@@ -1611,6 +1580,7 @@ module {
         return b;
     };
 
+    // NEW
     public func intersection<X>(b1: Buffer2<X>, b2: Buffer2<X>, compare : (X, X) -> Order): Buffer2<X> {
         if (b1.size() > b2.size()){
           var big = b1.clone();
