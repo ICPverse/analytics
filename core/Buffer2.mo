@@ -1271,12 +1271,23 @@ module {
     newBuffer;
   };
 
-  /// Eliminates all duplicate elements in `buffer` as defined by `compare`.
-  /// Elimination is stable with respect to the original ordering of the elements.
-  ///
-  /// Runtime: O(size * log(size))
-  ///
-  /// Space: O(size)
+  public func dedup<X>(buffer: Buffer2<X>, compare : (X, X) -> Order) : Buffer2<X>{
+    let size = buffer.size();
+    if (size == 0) {
+      return buffer;
+    };
+    var resultBuffer = Buffer2<X>(size);
+    var i = 0;
+    resultBuffer.add(buffer.get(0));
+    while (i + 1 < size) {
+      if (compare(buffer.get(i), buffer.get(i + 1)) != #equal) {
+        resultBuffer.add(buffer.get(i + 1));
+      };
+      i += 1;
+    };
+    resultBuffer;
+  };
+
   public func removeDuplicates<X>(buffer : Buffer2<X>, compare : (X, X) -> Order) {
     let size = buffer.size();
     let indices = Prim.Array_tabulate<(Nat, X)>(size, func i = (i, buffer.get(i)));

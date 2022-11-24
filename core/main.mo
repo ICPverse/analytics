@@ -176,4 +176,13 @@ actor {
     public func testFill(size: Nat, el: Nat): async [Nat] {
         return Buffer.fill<Nat>(size, el).toArray();
     };
+
+    public func testDedupVsRemoveDuplicates(): async () {
+        let arr = [1, 2, 2, 2, 3, 3, 2, 1, 9];
+        var b = Buffer.fromArray<Nat>(arr);
+        var b1 = Buffer.dedup<Nat>(b, Nat.compare);
+        Debug.print(debug_show b1.toArray());
+        Buffer.removeDuplicates(b, Nat.compare);
+        Debug.print(debug_show b.toArray());
+    };
 };
