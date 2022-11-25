@@ -15,6 +15,10 @@ module {
             return im;
         };
 
+        public func getAll(): (Float, Float) {
+            return (re, im);
+        };
+
         public func square_norm():  Float {
             return (re ** 2) + (im ** 2);
         };
@@ -61,11 +65,33 @@ module {
         return Complex(re, im);
     };
 
+
     public func div(c1: Complex, c2: Complex): Complex {
         assert (c2.square_norm() != 0.0);
         return prod(c1, c2.inverse());
 
     };
+
+    public func pow(c: Complex, n: Nat): Complex {
+        if (n == 0){
+            assert (c.getReal() != 0 and c.getImaginary() != 0);
+        };
+        var i = 0;
+        var res = Complex(1, 0);
+        while (i < n) {
+            res := prod(c, res);
+            i += 1;
+        };
+        return res;
+    };
+
+    public func polar(c: Complex): (Float, Float) {
+        let r = c.norm();
+        let theta = Float.arctan2(c.getImaginary(), c.getReal());
+        return (r, theta);
+    };
+
+   
 
     public func cosh(x: Float): Float {
         let res = 1.0 + Float.pow(x, 2.0)/2.0 + Float.pow(x, 4.0)/24.0 + Float.pow(x, 6.0)/720.0 + Float.pow(x, 8.0)/40320.0 + Float.pow(x, 10.0)/3628800.0;

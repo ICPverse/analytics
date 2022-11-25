@@ -78,6 +78,7 @@ module{
             
         };
         
+        
         let rand = Random.Finite(Text.encodeUtf8(res));
         let _res = rand.range(scope);
         let _val = Option.get(_res, Nat8.toNat(scope/2));
