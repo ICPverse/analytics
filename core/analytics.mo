@@ -9,6 +9,7 @@ import Buffer "Buffer2";
 import Random "mo:base/Random";
 import Time "mo:base/Time";
 import Text "mo:base/Text";
+import Iter "mo:base/Iter";
 import Option "mo:base/Option";
 import Nat8 "mo:base/Nat8";
 
@@ -31,11 +32,16 @@ module{
     // arbitrary string sequences, apparent randomness is high. However, since epoch values 
     // are in a way, deterministic, this isn't true/quantum randomness. However, it should be 
     // usable for most practical purposes.   
-    public func Rand2(scope: Nat8): Nat {
+    // The buffer is mainly to add another layer of entropy. Any buffer that serves no added
+    // purpose will suffice.
+    public func Rand2(scope: Nat8, b: Buffer.Buffer2<Nat>): Nat {
         var t = Time.now();
-        
+        b.add(10);
         var div : Int = 10;
+        var bsize  : Int = b.size();
+        t += bsize;
         var res = "";
+        
         while (t >= div){
             let remainder = t % (div);
             switch remainder {
@@ -72,7 +78,9 @@ module{
                 case _{
                     res := res # "zPAv";
                 };
+                
             };
+            
             t /= div;
             
             

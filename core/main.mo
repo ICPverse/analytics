@@ -141,8 +141,14 @@ actor {
 
     };
 
-    public func testRand(scope: Nat8): async Nat {
-        return Analytics.Rand2(scope);
+    public func testRand(scope: Nat8): async [Nat] {
+        let arr = [1];
+        var b = Buffer.fromArray<Nat>(arr);
+        let res1 = Analytics.Rand2(scope, b);
+        let res2 = Analytics.Rand2(scope, b);
+        let res3 = Analytics.Rand2(scope, b);
+        return [res1, res2, res3];
+        // Notice how even in one execution, each random value is different?
     };
 
     public func testFill(size: Nat, el: Nat): async [Nat] {
