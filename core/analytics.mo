@@ -41,46 +41,46 @@ module{
         var bsize  : Int = b.size();
         t += bsize;
         var res = "";
-        
+        var i = 1;
         while (t >= div){
             let remainder = t % (div);
             switch remainder {
                 case 0 {
-                    res := res # "a0ZKl";
+                    res := res # substring("a0ZKlN0o", i);
                 };
                 case 1 {
-                    res := res # "b1YJm";
+                    res := res # substring("b1YJmO9p", i);
                 };
                 case 2 {
-                    res := res # "c2XIn";
+                    res := res # substring("c2XInP8q", i);
                 };
                 case 3 {
-                    res := res # "d3WHo";
+                    res := res # substring("d3WHoQ7r", i);
                 };
                 case 4 {
-                    res := res # "e4VGp";
+                    res := res # substring("e4VGpR6s", i);
                 };
                 case 5 {
-                    res := res # "f5UFq";
+                    res := res # substring("f5UFqS5t", i);
                 };
                 case 6 {
-                    res := res # "g6TEr";
+                    res := res # substring("g6TErT4u", i);
                 };
                 case 7 {
-                    res := res # "h7SDs";
+                    res := res # substring("h7SDsU3v", i);
                 };
                 case 8 {
-                    res := res # "i8RCt";
+                    res := res # substring("i8RCtV2w", i);
                 };
                 case 9 {
-                    res := res # "j9QBu";
+                    res := res # substring("j9QBuW1x", i);
                 };
                 case _{
-                    res := res # "zPAv";
+                    res := res # substring("zPAvX0y", i);
                 };
                 
             };
-            
+            i += 1;
             t /= div;
             
             
@@ -544,6 +544,20 @@ module{
             N <<= 1;
         };
         return ?buffer;
+    };
+
+    func substring(t: Text, size: Nat): Text {
+        if (size == 0){
+            return "";
+        };
+        var i = 0;
+        var res = "";
+        var arr = Iter.toArray(t.chars());
+        while (i < t.size() and i < size){
+            res := res # Text.fromChar(arr[i]);
+            i += 1;
+        };
+        return res;
     };
 
 };
