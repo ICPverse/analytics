@@ -5,7 +5,8 @@ It contains (but is not limited to) the following:
 1. Complex Numbers 
 2. Clustering (KNN, Linear Regression) 
 3. Hyperbolic Functions 
-4. Mean, Median, Mode, Wmean, etc 
+4. Mean, Median, Mode, Wmean, etc  
+5. Pseudorandom function with 2 degrees of randomness 
 
 
 This is an open-source repository and we always encourage anyone who wants to contribute to freely do so.
