@@ -237,9 +237,9 @@ module{
 
     };
 
-    public func geometricMean(arr : [Float]): Float{
+    public func geometricMean(arr : [Float]): ?Float{
         if (arr.size() == 0){
-            return 0.000;
+            return null;
         };
         var product : Float = 1.0;
         for (item in arr.vals()){
@@ -247,7 +247,24 @@ module{
         };
         let size : Int = arr.size();
         
-        return product**(1/Float.fromInt(size));
+        return ?(product**(1/Float.fromInt(size)));
+    };
+
+    public func harmonicMean(arr: [Float]): ?Float {
+        if (arr.size() == 0) {
+            return null;
+        };
+        var inv_sum : Float = 0.00;
+        for (item in arr.vals()){
+            if (item == 0.00){
+                return null;
+            }
+            else {
+                inv_sum += 1 / item;
+            };
+        };
+        var inv_mean : Float = inv_sum / Float.fromInt(arr.size());
+        return ?(1 / inv_mean);
     };
 
     public func median(arr : [Float]): Float{

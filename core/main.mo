@@ -17,8 +17,12 @@ actor {
         return Analytics.weightedMean(arr,minWeight,weightIncrement);
     };
 
-    public func geometricMeanVal(arr : [Float]): async Float{
+    public func geometricMeanVal(arr : [Float]): async ?Float{
         return Analytics.geometricMean(arr);
+    };
+
+    public func harmonicMeanVal(arr : [Float]): async ?Float{
+        return Analytics.harmonicMean(arr);
     };
 
     public func medianVal(arr : [Float]): async Float{
