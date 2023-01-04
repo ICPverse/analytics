@@ -283,6 +283,57 @@ module{
 
     };
 
+    public func mode(arr : [Float]): ?Float{
+        if (arr.size() == 0){
+            return null;
+        };
+        var newArr : [var Float] = Array.thaw(arr);
+        Array.sortInPlace<Float>(newArr, Float.compare);
+
+        var unique_el : [Float] = [newArr[0]];
+        var occurences : [var Nat] = [var 1];
+        
+
+        var i = 1;
+        while (i < newArr.size()) {
+            if (newArr[i] > unique_el[unique_el.size() - 1]){
+                unique_el := Array.append(unique_el, Array.make(newArr[i]));
+                occurences := Array.thaw(Array.append<Nat>(Array.freeze<Nat>(occurences), [1]));
+            }
+            else {
+                occurences[occurences.size() - 1] += 1;
+            };
+            i += 1;
+        };
+        
+        var max_count = 0;
+
+        i := 0;
+
+        while (i < occurences.size()){
+            if (max_count < occurences[i]){
+                max_count := occurences[i];
+            };
+            i += 1;
+        };
+        
+        i := 0;
+
+        var sum = 0.00;
+        var peak_count = 0;
+        while (i < unique_el.size()){
+            if (occurences[i] == max_count){
+                sum += unique_el[i];
+                peak_count += 1;
+            };
+            i += 1;
+        };
+        
+        return ?(sum/Float.fromInt(peak_count));
+        
+
+    };
+
     public func rootMeanSquare(arr: [Float]): ?Float{
         var sum : Float = 0.0;
         for (item in arr.vals()){
@@ -294,6 +345,20 @@ module{
         }
         else{
             return ?((Float.div(sum,Float.fromInt(size)))**0.5);
+        };
+    };
+
+    public func rootMeanCube(arr: [Float]): ?Float{
+        var sum : Float = 0.0;
+        for (item in arr.vals()){
+            sum += item*item*item;
+        };
+        let size : Int = arr.size();
+        if (size == 0){
+            return null;
+        }
+        else{
+            return ?((Float.div(sum,Float.fromInt(size)))**0.333333);
         };
     };
 
