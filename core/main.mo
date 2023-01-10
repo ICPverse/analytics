@@ -13,6 +13,14 @@ actor {
         return Analytics.mean(arr);
     };
 
+    public func sdVal(arr : [Float]): async ?Float{
+        return Analytics.sdeviation(arr);
+    };
+
+    public func covarianceVal(arr1 : [Float], arr2: [Float]): async ?Float{
+        return Analytics.covariance(arr1, arr2);
+    };
+
     public func weightedMeanVal(arr : [Float], minWeight : Float, weightIncrement : Float): async ?Float{
         return Analytics.weightedMean(arr,minWeight,weightIncrement);
     };
@@ -57,6 +65,14 @@ actor {
         let _c = Complex.Complex(c.0, c.1);
         
         return  _c.inverse().getAll();
+    };
+
+    public func aprogVal(t1: Float, cd: Float, n: Nat): async [Float]{
+        return Analytics.arithmeticProgression(t1, cd, n);
+    };
+
+    public func gprogVal(t1: Float, cr: Float, n: Nat): async [Float]{
+        return Analytics.geometricProgression(t1, cr, n);
     };
 
     public func fft_input_permutation(length: Nat32) :  async [Nat] {

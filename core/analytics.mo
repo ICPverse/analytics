@@ -219,6 +219,50 @@ module{
         };
     };
 
+    public func sdeviation(arr: [Float]): ?Float{
+        let size : Int = arr.size();
+        if (size == 0){
+            return null;
+        };
+        var sum : Float = 0.0;
+        for (item in arr.vals()){
+            sum += item;
+        };
+        let mean = (Float.div(sum,Float.fromInt(size)));
+        var sum2 : Float = 0.0;
+        for (item in arr.vals()){
+            sum2 += (item - mean)**2;
+        };
+        return ?((Float.div(sum2, Float.fromInt(size)))**0.5) ;
+        
+    };
+
+    public func covariance(arr1: [Float], arr2: [Float]): ?Float{
+        let size1 : Int = arr1.size();
+        let size2 : Int = arr2.size();
+        if (size1 <= 1  or size1 != size2){
+            return null;
+        };
+        var sum : Float = 0.0;
+        for (item in arr1.vals()){
+            sum += item;
+        };
+        let mean1 = (Float.div(sum,Float.fromInt(size1)));
+        sum := 0;
+        for (item in arr2.vals()){
+            sum += item;
+        };
+        let mean2 = (Float.div(sum,Float.fromInt(size2)));
+        var i = 0;
+        sum := 0;
+        while (i < size1){
+            sum += (arr1[i] - mean1)*(arr2[i] - mean2);
+            i += 1;
+        };
+        return ?(Float.div(sum, Float.fromInt(size2 - 1)));
+
+    };
+
     public func weightedMean(arr : [Float], minWeight : Float, weightIncrement : Float) : ?Float{
         var sum : Float = 0.0;
         var deno : Float = 0.0;
@@ -360,6 +404,26 @@ module{
         else{
             return ?((Float.div(sum,Float.fromInt(size)))**0.333333);
         };
+    };
+
+    public func arithmeticProgression(term1: Float, cd: Float, n: Nat): [Float]{
+        var res: [Float] = [];
+        var i = 0;
+        while (i < n){
+            res := Array.append(res, [(term1 + Float.fromInt(i)*cd)]);
+            i += 1;
+        };
+        return res;
+    };
+
+    public func geometricProgression(term1: Float, cr: Float, n: Nat): [Float]{
+        var res: [Float] = [];
+        var i = 0;
+        while (i < n){
+            res := Array.append(res, [(term1 * cr**(Float.fromInt(i)))]);
+            i += 1;
+        };
+        return res;
     };
 
     public func correlation(arr1: [Float], arr2: [Float]): ?Float{
