@@ -21,6 +21,31 @@ actor {
         return Analytics.covariance(arr1, arr2);
     };
 
+    public func normalizeVal(arr : [Float]): async ?[Float]{
+        return Analytics.normalize(arr);
+    };
+
+    public func zNormalizeVal(arr : [Float]): async ?[Float]{
+        return Analytics.zNormalize(arr);
+    };
+
+    public func clipNormalizeVal(arr : [Float], range: Nat): async ?[Float]{
+        return Analytics.clipNormalize(arr, range);
+    };
+
+    public func bucketVal(arr: [Float], n: Nat): async ?[Float]{
+        let val = Analytics.bucket(arr, n);
+        switch val{
+            case null {
+                return null;
+            };
+            case (?arr) {
+                return ?(Array.freeze(arr));
+            };
+        };
+        return null;
+    };
+
     public func weightedMeanVal(arr : [Float], minWeight : Float, weightIncrement : Float): async ?Float{
         return Analytics.weightedMean(arr,minWeight,weightIncrement);
     };

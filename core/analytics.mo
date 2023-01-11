@@ -426,6 +426,140 @@ module{
         return res;
     };
 
+    public func normalize(arr: [Float]): ?[Float]{
+        var size = arr.size();
+        var res: [Float] = [];
+        if (size == 0){
+            return ?res;
+        };
+        var min: Float = arr[0];
+        var max: Float = arr[0];
+        var i = 1;
+        while (i < size){
+            if (max < arr[i]){
+                max := arr[i];
+            };
+            if (min > arr[i]){
+                min := arr[i];
+            };
+            i += 1;
+        } ;
+        if (max == min){
+            return null;
+        };
+        i := 0;
+        while (i < size){
+            res := Array.append(res, [(arr[i] - min)/(max - min)]);
+            i += 1;
+        };
+        return ?res;
+    };
+
+    public func zNormalize(arr: [Float]): ?[Float]{
+        let size : Int = arr.size();
+        var res : [Float] = [];
+        if (size == 0){
+            return ?res;
+        };
+        var sum : Float = 0.0;
+        for (item in arr.vals()){
+            sum += item;
+        };
+        let mean = (Float.div(sum,Float.fromInt(size)));
+        var sum2 : Float = 0.0;
+        for (item in arr.vals()){
+            sum2 += (item - mean)**2;
+        };
+        var sd = ((Float.div(sum2, Float.fromInt(size)))**0.5) ;
+        if (sd == 0){
+            return null;
+        };
+        var i = 0;
+        while (i < size){
+            res := Array.append(res, [(arr[i] - mean)/sd]);
+            i += 1;
+        };
+        return ?res;
+        
+    };
+
+    public func clipNormalize(arr: [Float], range: Nat): ?[Float]{
+        let size : Int = arr.size();
+        var res : [Float] = [];
+        if (size == 0){
+            return ?res;
+        };
+        if (range > 100 or range == 0){
+            return null;
+        };
+        var sum : Float = 0.0;
+        for (item in arr.vals()){
+            sum += item;
+        };
+        let mean = (Float.div(sum,Float.fromInt(size)));
+        let min = mean - mean * Float.div(Float.fromInt(range), 100.00);
+        let max = mean + mean * Float.div(Float.fromInt(range), 100.00);
+        var i = 0;
+        var el : Float = 0.00;
+        while (i < size){
+            el := arr[i];
+            if (arr[i] > max){
+                el := max;
+            };
+            if (arr[i] < min){
+                el := min;
+            };
+            res := Array.append(res, [el]);
+            i += 1;
+        };
+        return ?res;
+        
+    };
+
+    public func bucket(arr: [Float], n: Nat): ?[var Float]{
+        var res: [var Float] = Array.thaw([]);
+        let size = arr.size();
+        if (size == 0){
+            return ?res;
+        };
+        if (n == 0 or n == 1){
+            return null;
+        };
+        var min: Float = arr[0];
+        var max: Float = arr[0];
+        var i = 1;
+        while (i < size){
+            if (max < arr[i]){
+                max := arr[i];
+            };
+            if (min > arr[i]){
+                min := arr[i];
+            };
+            i += 1;
+        } ;
+        if (max == min){
+            return null;
+        };
+        let interval : Float = (max - min)/Float.fromInt(n);
+        i := 0;
+        while (i < n){
+            res := Array.thaw(Array.append(Array.freeze(res), [0.00]));
+            i += 1;
+        };
+        i := 1;
+        for (item in arr.vals()){
+            while (min + Float.fromInt(i)* interval < item){
+                i += 1;
+            };
+            Debug.print(debug_show i);
+            res[i-1] := res[i-1] + 1.0;
+            i := 1;
+        };
+        return ?res;
+
+
+    };
+
     public func correlation(arr1: [Float], arr2: [Float]): ?Float{
         if (arr1.size() != arr2.size()){
             return null;
