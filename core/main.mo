@@ -46,6 +46,10 @@ actor {
         return null;
     };
 
+    public func predictVal(arr: [Float], rf: Float): async ?Float{
+        return Analytics.predict_next(arr, rf);
+    };
+
     public func weightedMeanVal(arr : [Float], minWeight : Float, weightIncrement : Float): async ?Float{
         return Analytics.weightedMean(arr,minWeight,weightIncrement);
     };

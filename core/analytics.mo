@@ -426,6 +426,16 @@ module{
         return res;
     };
 
+    public func arithmeticoGeometricProgression(term1: Float, cd: Float, cr: Float, n: Nat): [Float]{
+        var res: [Float] = [];
+        var i = 0;
+        while (i < n){
+            res := Array.append(res, [((term1 + Float.fromInt(i)*cd) * cr**(Float.fromInt(i)))]);
+            i += 1;
+        };
+        return res;
+    };
+
     public func normalize(arr: [Float]): ?[Float]{
         var size = arr.size();
         var res: [Float] = [];
@@ -557,6 +567,66 @@ module{
         };
         return ?res;
 
+
+    };
+
+    public func predict_next(arr: [Float], recency_factor: Float): ?Float {
+        if (recency_factor >= 1.0 or recency_factor <= 0.0){
+            return null;
+        };
+        if (arr.size() == 0){
+            return null;
+        };
+        var isStrictlyIncreasing = true;
+        var isStrictlyDecreasing = true;
+        if (arr.size() == 1){
+            isStrictlyDecreasing := false;
+            isStrictlyIncreasing := false;
+        };
+        var i = 1;
+        while (i < arr.size()){
+            if (arr[i - 1] > arr[i]){
+                isStrictlyIncreasing := false;
+            };
+            if (arr[i - 1] < arr[i]){
+                isStrictlyDecreasing := false;
+            };
+            i += 1;
+        };
+        var sum: Float = 0.00;
+        var div: Float = 0.00;
+        i := 1;
+
+        if (isStrictlyIncreasing){
+            while ( i < arr.size()){
+                sum +=  (arr[i] - arr[i - 1]) * Float.pow(1.00 + recency_factor, Float.fromInt(i));
+                div += Float.pow(1.00 + recency_factor, Float.fromInt(i));
+                i += 1;
+            };
+            return ?(arr[arr.size() - 1] + sum/div);
+            
+        };
+
+        if (isStrictlyDecreasing){
+            while ( i < arr.size()){
+                sum +=  (arr[i] - arr[i - 1]) * Float.pow(1.00 + recency_factor, Float.fromInt(i));
+                div += Float.pow(1.00 + recency_factor, Float.fromInt(i));
+                i += 1;
+            };
+            return ?(arr[arr.size() - 1] - sum/div);
+            
+        };
+        
+        sum := 0.00;
+        div := 0.00;
+        i := 0;
+        
+        while (i < arr.size()){
+            sum += (arr[i] * Float.pow(1.00 + recency_factor, Float.fromInt(i)));
+            div += Float.pow(1.00 + recency_factor, Float.fromInt(i));
+            i += 1;
+        };
+        return ?(sum/div);
 
     };
 
