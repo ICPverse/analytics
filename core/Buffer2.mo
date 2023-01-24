@@ -536,6 +536,18 @@ module {
 
   
   public func isEmpty<X>(buffer : Buffer2<X>) : Bool = buffer.size() == 0;
+  
+  
+  public func occurences<X>(buffer : Buffer2<X>, element : X, equal : (X, X) -> Bool) : Nat {
+    var occ = 0;
+    for (current in buffer.vals()) {
+      if (equal(current, element)) {
+        occ += 1;
+      };
+    };
+
+    return occ;
+  };
 
   
   public func contains<X>(buffer : Buffer2<X>, element : X, equal : (X, X) -> Bool) : Bool {
