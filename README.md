@@ -7,9 +7,10 @@ It contains (but is not limited to) the following:
 3. Hyperbolic Functions 
 4. Mean, Median, Mode, Wmean, etc  
 5. Pseudorandom function with 2 degrees of randomness 
-6. Covariance 
-7. Data Normalization 
-8. Progressions 
+6. Covariance (NEW)  
+7. Data Normalization (NEW)  
+8. Progressions (NEW)    
+9. Data Prediction (NEW)  
 
 
 This is an open-source repository and we always encourage anyone who wants to contribute to freely do so.
