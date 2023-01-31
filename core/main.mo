@@ -216,4 +216,12 @@ actor {
         Buffer.removeDuplicates(b, Nat.compare);
         Debug.print(debug_show b.toArray());
     };
+
+    public func testBayesian(): async ?Float {
+        let a = [1, 2, 3, 1, 1, 2, 2, 3, 3, 4];
+        let b = [1, 1, 1, 2, 2, 2, 1, 2, 1, 2];
+        let c = [1, 3, 3, 2, 1, 2, 2, 2, 1, 3];
+        let res = [1, 1, 2, 1, 1, 1, 2, 2, 2, 2];
+        return Analytics.naive_bayes(a, b, c, 3, res, 2, 1, 2, 1);
+    };
 };

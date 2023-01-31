@@ -910,4 +910,115 @@ module{
         return res;
     };
 
+    public func dSigmoid(x: Float): async Float {
+        return x*(1.00-x);
+    };
+
+    public func sigmoid(x: Float): async Float {
+        return 1.000/Float.pow(Float.e, -1.000); 
+    };
+
+    public func naive_bayes(a: [Nat], b: [Nat], c: [Nat], dim: Nat, res: [Nat], aval: Nat, bval: Nat, cval: Nat, resval: Nat):  ?Float{
+        if (dim == 1) {
+            if (a.size() != res.size()){
+                return null;
+            
+            };
+            var i = 0;
+            while (i < a.size()){
+                if (a[i] == 0 or a[i] > 5 or res[i] == 0 or res[i] > 5){
+                    return null;
+                };
+                i += 1;
+            };
+            i := 0;
+            var occ_correct = 0;
+            var occ_all = 0;
+            while (i < a.size()){
+                if (res[i] == resval){
+                    occ_all += 1;
+                    if (a[i] == aval){
+                        occ_correct += 1;
+                    };
+                };
+                i += 1;
+            };
+            var p = (Float.fromInt(occ_correct) / Float.fromInt(occ_all)) * (Float.fromInt(occ_all) / Float.fromInt(a.size()));
+            return ?p;
+        }
+        else if (dim == 2) {
+            if (a.size() != res.size() or a.size() != b.size()){
+                return null;
+            
+            };
+            var i = 0;
+            while (i < a.size()){
+                if (a[i] == 0 or a[i] > 5 or b[i] == 0 or b[i] > 5 or res[i] == 0 or res[i] > 5){
+                    return null;
+                };
+                i += 1;
+            };
+            i := 0;
+            var occ_correct = 0;
+            var occ_all = 0;
+            var occ_correct2 = 0;
+            
+            while (i < a.size()){
+                if (res[i] == resval){
+                    occ_all += 1;
+                    
+                    if (a[i] == aval){
+                        occ_correct += 1;
+                    };
+                    if (b[i] == bval){
+                        occ_correct2 += 1;
+                    };
+                };
+                i += 1;
+            };
+            var p = (Float.fromInt(occ_correct) / Float.fromInt(occ_all)) * (Float.fromInt(occ_correct2) / Float.fromInt(occ_all)) * (Float.fromInt(occ_all) / Float.fromInt(a.size()));
+            return ?p;
+        }
+        else if (dim == 3) {
+            if (a.size() != res.size() or a.size() != b.size() or a.size() != c.size()){
+                return null;
+            
+            };
+            var i = 0;
+            while (i < a.size()){
+                if (a[i] == 0 or a[i] > 5 or b[i] == 0 or b[i] > 5 or c[i] == 0 or c[i] > 5 or res[i] == 0 or res[i] > 5){
+                    return null;
+                };
+                i += 1;
+            };
+            i := 0;
+            var occ_correct = 0;
+            var occ_all = 0;
+            var occ_correct2 = 0;
+            var occ_correct3 = 0;
+            
+            while (i < a.size()){
+                if (res[i] == resval){
+                    occ_all += 1;
+                    
+                    if (a[i] == aval){
+                        occ_correct += 1;
+                    };
+                    if (b[i] == bval){
+                        occ_correct2 += 1;
+                    };
+                    if (c[i] == cval){
+                        occ_correct3 += 1;
+                    };
+                };
+                i += 1;
+            };
+            var p = (Float.fromInt(occ_correct) / Float.fromInt(occ_all)) * (Float.fromInt(occ_correct2) / Float.fromInt(occ_all)) * (Float.fromInt(occ_correct3) / Float.fromInt(occ_all)) * (Float.fromInt(occ_all) / Float.fromInt(a.size()));
+            return ?p;
+        }
+        else {
+            return null;
+        };
+    }; 
+
 };
