@@ -10,7 +10,8 @@ It contains (but is not limited to) the following:
 6. Covariance (NEW)  
 7. Data Normalization (NEW)  
 8. Progressions (NEW)    
-9. Data Prediction (NEW)  
+9. Data Prediction (NEW)   
+10. Naive Bayesian Classifier (NEW)  
 
 
 This is an open-source repository and we always encourage anyone who wants to contribute to freely do so.
