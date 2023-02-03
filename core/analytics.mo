@@ -613,7 +613,57 @@ module{
                 div += Float.pow(1.00 + recency_factor, Float.fromInt(i));
                 i += 1;
             };
-            return ?(arr[arr.size() - 1] - sum/div);
+            return ?(arr[arr.size() - 1] + sum/div);
+            
+        };
+
+        var isMostlyIncreasing = false;
+        var isMostlyDecreasing = false;
+        if (arr.size() == 1){
+            isMostlyDecreasing := false;
+            isMostlyIncreasing := false;
+        };
+        var mostlyIncreasingDeviations = 0;
+        var mostlyDecreasingDeviations = 0;
+        i := 1;
+        while (i < arr.size()){
+            if (arr[i - 1] > arr[i]){
+                mostlyIncreasingDeviations += 1;
+            };
+            if (arr[i - 1] < arr[i]){
+                mostlyDecreasingDeviations += 1;
+            };
+            i += 1;
+        };
+        sum := 0.00;
+        div := 0.00;
+        i := 1;
+        if (Float.fromInt(mostlyIncreasingDeviations)/Float.fromInt(arr.size()) <= 0.200){
+            isMostlyIncreasing := true;
+        }
+        else if (Float.fromInt(mostlyDecreasingDeviations)/Float.fromInt(arr.size()) <= 0.200){
+            isMostlyDecreasing := true;
+        }
+        else {};
+        
+
+        if (isMostlyIncreasing){
+            while ( i < arr.size()){
+                sum +=  (arr[i] - arr[i - 1]) * Float.pow(1.00 + recency_factor, Float.fromInt(i));
+                div += Float.pow(1.00 + recency_factor, Float.fromInt(i));
+                i += 1;
+            };
+            return ?(arr[arr.size() - 1] + (Float.fromInt(mostlyIncreasingDeviations)/Float.fromInt(arr.size()))*sum/div);
+            
+        };
+
+        if (isMostlyDecreasing){
+            while ( i < arr.size()){
+                sum +=  (arr[i] - arr[i - 1]) * Float.pow(1.00 + recency_factor, Float.fromInt(i));
+                div += Float.pow(1.00 + recency_factor, Float.fromInt(i));
+                i += 1;
+            };
+            return ?(arr[arr.size() - 1] + (Float.fromInt(mostlyDecreasingDeviations)/Float.fromInt(arr.size()))*sum/div);
             
         };
         
@@ -909,6 +959,8 @@ module{
         };
         return res;
     };
+
+  
 
     public func dSigmoid(x: Float): async Float {
         return x*(1.00-x);
