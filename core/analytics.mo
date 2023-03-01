@@ -378,6 +378,72 @@ module{
 
     };
 
+    public func skewness(arr: [Float]): ?Float {
+        if (arr.size() <= 1){
+            return null;
+        };
+        var i = 0;
+        var sum: Float = 0.00;
+        while (i < arr.size()){
+            sum += arr[i];
+            i += 1;
+        };
+        var mean = sum/Float.fromInt(arr.size());
+        i := 0;
+        sum := 0.00;
+        while (i < arr.size()){
+            sum += Float.pow((arr[i] - mean), 2);
+            i += 1;
+        };
+        var sd = (sum/(Float.fromInt(arr.size())))**0.5;
+        if (sd == 0.00){
+            return null;
+        };
+
+        i := 0;
+        sum := 0.00;
+        while (i < arr.size()){
+            sum += Float.pow(((arr[i] - mean)/sd), 3);
+            i += 1;
+        };
+        
+        return ?(sum/(Float.fromInt(arr.size())));
+
+    };
+
+    public func kurtosis(arr: [Float]): ?Float {
+        if (arr.size() <= 1){
+            return null;
+        };
+        var i = 0;
+        var sum: Float = 0.00;
+        while (i < arr.size()){
+            sum += arr[i];
+            i += 1;
+        };
+        var mean = sum/Float.fromInt(arr.size());
+        i := 0;
+        sum := 0.00;
+        while (i < arr.size()){
+            sum += Float.pow((arr[i] - mean), 2);
+            i += 1;
+        };
+        var sd = (sum/(Float.fromInt(arr.size())))**0.5;
+        if (sd == 0.00){
+            return null;
+        };
+        
+        i := 0;
+        sum := 0.00;
+        while (i < arr.size()){
+            sum += Float.pow(((arr[i] - mean)/sd), 4);
+            i += 1;
+        };
+        
+        return ?(sum/(Float.fromInt(arr.size())));
+
+    };
+
     public func rootMeanSquare(arr: [Float]): ?Float{
         var sum : Float = 0.0;
         for (item in arr.vals()){

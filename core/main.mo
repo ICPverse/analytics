@@ -74,6 +74,14 @@ actor {
         return Analytics.correlation(arr1,arr2);
     };
 
+    public func skewnessVal(arr: [Float]): async ?Float{
+        return Analytics.skewness(arr);
+    };
+
+     public func kurtosisVal(arr: [Float]): async ?Float{
+        return Analytics.kurtosis(arr);
+    };
+
     public func linReg(arr1: [Float], arr2: [Float]): async ?(Float,Float){
         return Analytics.linearRegression(arr1,arr2);
     };
