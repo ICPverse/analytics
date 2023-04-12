@@ -472,6 +472,32 @@ module{
         };
     };
 
+    public func gamma(f: Float): ?Float{
+        if (Float.floor(f) == f and f <= 0.00){
+            return null;
+        };
+        if (f == 1.00 or f == 2.00){
+            return ?1.00;
+        };
+        var i : Float = 1.00;
+        var prod : Float = 1.00;
+
+        if (f > 2.00 and Float.floor(f) == f){
+            while (i < f){
+                prod *= i;
+                i += 1.00;
+            };
+            return ?prod;
+        };
+        var factor : Float = f/6.00;
+        while (i < 200000.00*factor ){
+            
+            prod := prod * ((1.00/(1.00 + (f/i))) * (1.00 + 1.00/i)**f ) * ((1.00/(1.00 + (f/(i+1.00)))) * (1.00 + 1.00/(i+1.00))**f );
+            i += 2.00;
+        };
+        return ?(prod/f);
+    };
+
     public func arithmeticProgression(term1: Float, cd: Float, n: Nat): [Float]{
         var res: [Float] = [];
         var i = 0;

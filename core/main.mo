@@ -82,6 +82,10 @@ actor {
         return Analytics.kurtosis(arr);
     };
 
+    public func gammaVal(f: Float): async ?Float{
+        return Analytics.gamma(f);
+    };
+
     public func linReg(arr1: [Float], arr2: [Float]): async ?(Float,Float){
         return Analytics.linearRegression(arr1,arr2);
     };
