@@ -86,6 +86,10 @@ actor {
         return Analytics.gamma(f);
     };
 
+    public func betaVal(a: Float, b: Float): async ?Float{
+        return Analytics.beta(a,b);
+    };
+
     public func linReg(arr1: [Float], arr2: [Float]): async ?(Float,Float){
         return Analytics.linearRegression(arr1,arr2);
     };

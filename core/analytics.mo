@@ -490,12 +490,98 @@ module{
             return ?prod;
         };
         var factor : Float = f/6.00;
+        i := 1.00;
         while (i < 200000.00*factor ){
             
             prod := prod * ((1.00/(1.00 + (f/i))) * (1.00 + 1.00/i)**f ) * ((1.00/(1.00 + (f/(i+1.00)))) * (1.00 + 1.00/(i+1.00))**f );
             i += 2.00;
         };
         return ?(prod/f);
+    };
+
+    public func beta(a: Float, b: Float): ?Float{
+        if (Float.floor(a) == a and a <= 0.00){
+            return null;
+        };
+        if (Float.floor(b) == b and b <= 0.00){
+            return null;
+        };
+        if (Float.floor(a+b) == (a+b) and (a+b) <= 0.00){
+            return null;
+        };
+
+        var i : Float = 1.00;
+        var prod1 : Float = 1.00;
+
+        if (a > 2.00 and Float.floor(a) == a){
+            while (i < a){
+                prod1 *= i;
+                i += 1.00;
+            };
+            
+        };
+        if (a == 1.0 or a == 2.0){
+            prod1 := 1.0;
+        };
+
+        if (a != Float.floor(a)){
+            var factor1 : Float = a/6.00;
+            while (i < 200000.00*factor1 ){
+                
+                prod1 := prod1 * ((1.00/(1.00 + (a/i))) * (1.00 + 1.00/i)**a ) * ((1.00/(1.00 + (a/(i+1.00)))) * (1.00 + 1.00/(i+1.00))**a );
+                i += 2.00;
+            };
+            prod1 := prod1/a;
+        };
+
+        i := 1.00;
+        var prod2 : Float = 1.00;
+
+        if (b > 2.00 and Float.floor(b) == b){
+            while (i < b){
+                prod2 *= i;
+                i += 1.00;
+            };
+            
+        };
+        if (b == 1.0 or b == 2.0){
+            prod2 := 1.0;
+        };
+
+        if (b != Float.floor(b)){
+            var factor2 : Float = b/6.00;
+            while (i < 200000.00*factor2 ){
+                
+                prod2 := prod2 * ((1.00/(1.00 + (b/i))) * (1.00 + 1.00/i)**b ) * ((1.00/(1.00 + (b/(i+1.00)))) * (1.00 + 1.00/(i+1.00))**b );
+                i += 2.00;
+            };
+            prod2 := prod2/b;
+        };
+
+        i := 1.00;
+        var prod3 : Float = 1.00;
+
+        if ((a+b) > 2.00 and Float.floor(a+b) == (a+b)){
+            while (i < (a+b)){
+                prod3 *= i;
+                i += 1.00;
+            };
+            
+        };
+        if ((a+b) == 1.0 or (a+b) == 2.0){
+            prod3 := 1.0;
+        };
+
+        if ((a+b) != Float.floor(a+b)){
+            var factor3 : Float = (a+b)/6.00;
+            while (i < 200000.00*factor3 ){
+                
+                prod3 := prod3 * ((1.00/(1.00 + ((a+b)/i))) * (1.00 + 1.00/i)**(a+b) ) * ((1.00/(1.00 + ((a+b)/(i+1.00)))) * (1.00 + 1.00/(i+1.00))**(a+b) );
+                i += 2.00;
+            };
+            prod3 := prod3/(a+b);
+        };
+        return ?((prod1*prod2)/prod3);
     };
 
     public func arithmeticProgression(term1: Float, cd: Float, n: Nat): [Float]{
