@@ -120,6 +120,11 @@ actor {
         return Analytics.geometricProgression(t1, cr, n);
     };
 
+    public func hprogVal(t1: Float, cd: Float, n: Nat): async [Float]{
+        return Analytics.harmonicProgression(t1, cd, n);
+    };
+
+
     public func fft_input_permutation(length: Nat32) :  async [Nat] {
         return  Analytics.fast_fourier_transform_input_permutation(length);
     };

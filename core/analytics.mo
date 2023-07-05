@@ -614,6 +614,19 @@ module{
         return res;
     };
 
+    public func harmonicProgression(inverse_term1: Float, cd: Float, n: Nat): [Float]{
+        var res: [Float] = [];
+        var i = 0;
+        while (i < n){
+            if (inverse_term1 + Float.fromInt(i)*cd == 0){
+                return [];
+            };
+            res := Array.append(res, [(Float.fromInt(1)/(inverse_term1 + Float.fromInt(i)*cd))]);
+            i += 1;
+        };
+        return res;
+    };
+
     public func normalize(arr: [Float]): ?[Float]{
         var size = arr.size();
         var res: [Float] = [];
